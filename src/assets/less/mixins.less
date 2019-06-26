@@ -1,0 +1,24 @@
+/*
+    文本溢出
+*/
+.text-overflow(@width) {
+    width: @width;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+/*
+    小尾巴图标
+*/
+.tails(@color:#e5e5e9) {
+    &::before {
+        content: "";
+        position: absolute;
+        width: 23px;
+        height: 20px;
+        bottom: 0;
+        left: -23px;
+        border-right: 11px solid @color;
+        border-radius: 0 0 20px 0;       
+    }
+}

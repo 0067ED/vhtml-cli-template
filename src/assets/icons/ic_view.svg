@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>ic_view</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="ic_view" stroke="none" stroke-width="1" fill-rule="evenodd">
+        <path d="M10,3 C6.686,3 1,7.062 1,10 C1,12.937 6.686,17 10,17 C13.313,17 19,12.969 19,10 C19,7.031 13.313,3 10,3 Z M10,15 C7.791,15 3,11.968 3,10 C3,8.031 7.791,5 10,5 C12.209,5 17,7.969 17,10 C17,12.031 12.209,15 10,15 Z M10,7 C8.343,7 7,8.343 7,10 C7,11.657 8.343,13 10,13 C11.657,13 13,11.657 13,10 C13,8.343 11.657,7 10,7 Z M10,11 C9.448,11 9,10.552 9,10 C9,9.448 9.448,9 10,9 C10.552,9 11,9.448 11,10 C11,10.552 10.552,11 10,11 Z" id="Combined-Shape" fill-rule="nonzero"></path>
+    </g>
+</svg>
