@@ -31,10 +31,10 @@ module.exports = {
         assetsPublicPath: '/',
         proxyTable: //  [
         {
-            '/call/settings/wpa/code': {
-                target: 'http://localhost:8080/static/loader.js',
-                ignorePath: true
-            },
+            // '/call/settings/wpa/code': {
+            //     target: 'http://localhost:8080/static/loader.js',
+            //     ignorePath: true
+            // },
             /* '/ea/task': {
                 filter (pathname, req) {
                   return pathname.match(/\/ea\/customer\/leads\/(create|del|detail|edit|export|import|list|modifyStatus|publics|upload)/)

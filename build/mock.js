@@ -38,7 +38,7 @@ module.exports = function (req, res, next) {
         return Mock.mock(require(filePath));
     }
 
-    console.log("file:",pathname);
+    console.log("mock file:",pathname);
     // console.log(pathname);
     if (regTest.test(pathname)) {
 

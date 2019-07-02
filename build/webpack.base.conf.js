@@ -11,7 +11,7 @@ function resolve (dir) {
 //   console.log('path', config.build.assetsRoot)
     // console.log('publicPath', config.dev.assetsPublicPath)
 module.exports = {
-  entry: utils.getEntries('./src/pages/**/main.js'),
+  entry: utils.getEntries('./src/pages/examples/main.js'),
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
@@ -25,8 +25,7 @@ module.exports = {
       //'vue$': 'vue/dist/vue.js',
       '@': resolve('src'),
       'src': resolve('src'),
-      'components': resolve('src/components'),
-      'meta': resolve('src/meta')
+      'components': resolve('src/components')
     }
   },
   module: {

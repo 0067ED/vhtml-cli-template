@@ -1,0 +1,5 @@
+{
+    "name": "text-viewer",
+    "version": "0.0.1",
+    "description": "显示一个 h3 标签，并在显示的文字前面加入一个 text-viewer 的前缀"
+}

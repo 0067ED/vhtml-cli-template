@@ -19,10 +19,10 @@ MyPlugin.prototype.apply = function(compiler) {
         //console.log(htmlPluginData.assets)
 
         htmlPluginData.assets.css = htmlPluginData.assets.css.map((css)=>{
-            return '//<%== _domain %><%== locals.base %>' + css +  '<%== locals.lbfConf.comboSuffix %>';
+            return '<%== _domain %><%== locals.base %>' + css +  '<%== locals.lbfConf.comboSuffix %>';
         });
         htmlPluginData.assets.js = htmlPluginData.assets.js.map((js)=>{
-            return '//<%== _domain %><%== locals.base %>' + js  +  '<%== locals.lbfConf.comboSuffix %>' ;
+            return '<%== _domain %><%== locals.base %>' + js  +  '<%== locals.lbfConf.comboSuffix %>' ;
         });
 
         // htmlPluginData.assets.js.unshift(`//<%== locals.vhtml %>vhtml.js<%== locals.lbfConf.comboSuffix %>`)

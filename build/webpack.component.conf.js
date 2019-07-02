@@ -4,11 +4,9 @@ var webpack = require('webpack')
 var config = require('../config')
 var merge = require('webpack-merge')
 var baseWebpackConfig = require('./webpack.base.conf')
-var JB_DIST_INFO = process.env.JB_DIST_INFO;
 var vueLoaderConfig = require('./vue-loader.conf')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 
-console.log('JB_DIST_INFO', JB_DIST_INFO);
 var env = config.build.env
 
 
@@ -43,12 +41,12 @@ module.exports = function(entry) {
       //   sourceMap: true
       // }),
       new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /zh-cn/),
-      // new ExtractTextPlugin({
-      //   filename: (getPath) => {
-      //     return utils.assetsPath('css/' + getPath(`veaComponents.css`).replace(/\//g, '_'));
-      //   },
-      //   allChunks: true
-      // }),
+      new ExtractTextPlugin({
+        filename: (getPath) => {
+          return utils.assetsPath('css/' + getPath(`veaComponents.css`).replace(/\//g, '_'));
+        },
+        allChunks: true
+      })
     ]
   })
   return webpackConfig;
