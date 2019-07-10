@@ -1,5 +1,10 @@
 <template>
-    <h3>text-viewer{{str && str.length ? ':' : ''}} {{str}}</h3>
+    <p>
+        <span class="title">text-viewer</span>
+        <span class="values">
+            {{str && str.length ? ':' : ''}} {{str}}
+        </span>
+    </p>
 </template>
 
 <script>
@@ -10,3 +15,9 @@ export default {
     }
 };
 </script>
+
+<style scoped>
+.title {
+    font-weight: bolder;
+}
+</style>

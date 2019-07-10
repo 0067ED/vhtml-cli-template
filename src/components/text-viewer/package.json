@@ -1,5 +1,6 @@
 {
     "name": "text-viewer",
     "version": "0.0.6",
-    "description": "显示一个 h3 标签，并在显示的文字前面加入一个 text-viewer 的前缀"
+    "description": "显示一个 h3 标签，并在显示的文字前面加入一个 text-viewer 的前缀",
+    "gitHead": "8f910411a1756d306a26805102dd50473fb803de"
 }
