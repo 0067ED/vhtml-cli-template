@@ -12,7 +12,8 @@
     "pretty": "node pretty.js",
     "precommit": "lint-staged",
     "commitmsg": "validate-commit-msg",
-    "new": "node build/bin/new.js"
+    "new": "node build/bin/new.js",
+    "component": "node build/build-component.js component"
   },
   "lint-staged": {
     "build/**/*": "eslint",

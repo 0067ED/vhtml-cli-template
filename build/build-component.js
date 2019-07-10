@@ -1,4 +1,8 @@
+const path = require('path')
+const fs = require('fs');
+
 process.env.NODE_ENV = 'production'
+process.env.IS_BUILD_COMPONENT = 'true'
 // process.env.NODE_ENV_INNER = 'development'
 
 var ora = require('ora')
@@ -6,23 +10,43 @@ var chalk = require('chalk')
 var webpack = require('webpack')
 var webpackConfig = require('./webpack.component.conf')
 
-console.log('as')
 const program = require('commander')
 
 program
-  .command('build <component-name>')
-  .action((name, cmd) => {
-    //const options = cleanArgs(cmd)
-    const options = cmd;
-    console.log(name)
-    console.log(options);
-    
-    return;
-    let jbInfo = process.env.JB_DIST_INFO && JSON.parse(process.env.JB_DIST_INFO) || '';
+    .command('list')
+    .action(_ => {
+        console.log('list')
+    })
+  .command('component <component-name>')
+  .action((componentName, cmd) => {
+    let componentPath = path.join(__dirname, '../src/components/', componentName);
+    let packageJsonPath = path.join(componentPath, 'package.json');
+    if (!fs.existsSync(componentPath)) {
+        console.error(`${componentPath} not exists.`)
+        process.exit();
+    }
+    if (!fs.existsSync(packageJsonPath)) {
+        console.error(`${packageJsonPath} not exists.`)
+        process.exit();
+    }
+    console.log(chalk.cyan('Component information:\n\tname:'), chalk.green(componentName));
+    console.log(chalk.cyan('\tpath:'), chalk.green(componentPath), '\n');
+    let packageJson = require(packageJsonPath);
+    if (!packageJson || !packageJson.main) {
+        packageJson.main = path.join(componentPath, 'index.vue');
+    }
+    if (!fs.existsSync(packageJson.main)) {
+        console.error(`${packageJson.main} not exists.`)
+        process.exit();
+    }
+
+    // let jbInfo = process.env.JB_DIST_INFO && JSON.parse(process.env.JB_DIST_INFO) || '';
     var spinner = ora('building for production...')
     spinner.start()
-
-    webpack(webpackConfig, function (err, stats) {
+    let outputJSFile = path.join('../static', componentName, 'index.js')
+    let outputStyleFile = path.join('../static', componentName, 'index.css')
+    let cfg = webpackConfig(packageJson.main, outputJSFile, outputStyleFile);
+    webpack(cfg, function (err, stats) {
       spinner.stop()
       if (err) throw err
       process.stdout.write(stats.toString({

@@ -12,7 +12,7 @@ var express = require('express');
 var webpack = require('webpack');
 var proxyMiddleware = require('http-proxy-middleware');
 var webpackConfig = require('./webpack.dev.conf');
-var webpackComConfig = require('./webpack.component.conf')();
+var webpackComConfig = require('./webpack.dev.conf');
 var bodyParser = require('body-parser');
 
 var devPath = path.resolve(__dirname, '../dev');

@@ -5,16 +5,18 @@ var config = require('../config')
 var merge = require('webpack-merge')
 var baseWebpackConfig = require('./webpack.base.conf')
 var vueLoaderConfig = require('./vue-loader.conf')
-var ExtractTextPlugin = require('extract-text-webpack-plugin')
+// var ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 var env = config.build.env
 
 
-module.exports = function(entry) {
+module.exports = function(entry, outputJSFilename, outputStyleFilename) {
+    // console.warn(utils.assetsPath('hello.js'));
+    console.log(`\n\toutput JavaScript:`, outputJSFilename);
+    console.log(`\toutput Style:`, outputStyleFilename);
   var webpackConfig = merge(baseWebpackConfig, {
     entry: entry,
     module: {
-
     },
     externals: {
       vue: 'Vue',
@@ -23,8 +25,10 @@ module.exports = function(entry) {
     devtool: config.build.productionSourceMap ? '#source-map' : false,
     output: {
       path: config.build.assetsRoot,
-      filename: utils.assetsPath(`js/veaComponents.js`),
-      // chunkFilename: utils.assetsPath(`js/[name]-[chunkhash].js`),
+      filename: outputJSFilename,
+      libraryTarget: 'umd'
+    //   filename: utils.assetsPath(outputFilename),
+    //   chunkFilename: utils.assetsPath(`js/[name]-[chunkhash].js`),
       // library: 'webpackNumbers',
       // libraryTarget: 'this'
     },
@@ -40,13 +44,14 @@ module.exports = function(entry) {
       //   },
       //   sourceMap: true
       // }),
-      new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /zh-cn/),
-      new ExtractTextPlugin({
-        filename: (getPath) => {
-          return utils.assetsPath('css/' + getPath(`veaComponents.css`).replace(/\//g, '_'));
-        },
-        allChunks: true
-      })
+      new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /zh-cn/)
+    //   new ExtractTextPlugin({
+    //     filename: (getPath) => {
+    //     //   return utils.assetsPath('css/' + getPath(`veaComponents.css`).replace(/\//g, '_'));
+    //         return outputStyleFilename;
+    //     },
+    //     allChunks: true
+    //   })
     ]
   })
   return webpackConfig;
