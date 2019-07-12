@@ -33,3 +33,22 @@ npm run component text-viewer
 ```
 
 之后，文件会被放入 `public/static/text-viewer/` 目录中。使用 UMD 模式打包。
+
+## 构建结果
+
+构建结果存放在 `public/static/<component-name>/` 目录中，为单 `index.js` 文件，头部如下：
+
+```js
+(function webpackUniversalModuleDefinition(root, factory) {
+        if(typeof exports === 'object' && typeof module === 'object')
+            module.exports = factory();
+        else if(typeof define === 'function' && define.amd)
+            define("TextViewer", [], factory);
+        else if(typeof exports === 'object')
+            exports["TextViewer"] = factory();
+        else
+            root["TextViewer"] = factory();
+})(this, function() {
+```
+
+文件不压缩。
