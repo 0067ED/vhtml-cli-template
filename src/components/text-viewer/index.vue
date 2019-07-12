@@ -8,13 +8,12 @@
 </template>
 
 <script>
-const TextViewer = {
+export default {
     name: 'TextViewer',
     props: {
         str: String
     }
 };
-export default TextViewer;
 </script>
 
 <style scoped>
