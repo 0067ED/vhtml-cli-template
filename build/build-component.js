@@ -1,5 +1,6 @@
 const path = require('path')
 const fs = require('fs');
+const utils = require('./utils');
 
 process.env.NODE_ENV = 'production'
 process.env.IS_BUILD_COMPONENT = 'true'
@@ -13,10 +14,10 @@ var webpackConfig = require('./webpack.component.conf')
 const program = require('commander')
 
 program
-    .command('list')
-    .action(_ => {
-        console.log('list')
-    })
+    // .command('list')
+    // .action(_ => {
+    //     console.log('list')
+    // })
   .command('component <component-name>')
   .action((componentName, cmd) => {
     let componentPath = path.join(__dirname, '../src/components/', componentName);
@@ -43,9 +44,15 @@ program
     // let jbInfo = process.env.JB_DIST_INFO && JSON.parse(process.env.JB_DIST_INFO) || '';
     var spinner = ora('building for production...')
     spinner.start()
-    let outputJSFile = path.join('../static', componentName, 'index.js')
-    let outputStyleFile = path.join('../static', componentName, 'index.css')
-    let cfg = webpackConfig(packageJson.main, outputJSFile, outputStyleFile);
+    let outputJSFile = path.join('../static/[name]/index.js')
+    let outputStyleFile = path.join('../static/[name]/index.css')
+    let entry = {};
+    entry[packageJson.name] = packageJson.main;
+    let output = {
+        filename: outputJSFile,
+        library: utils.toCamel(packageJson.name)
+    };
+    let cfg = webpackConfig(entry, output, outputStyleFile);
     webpack(cfg, function (err, stats) {
       spinner.stop()
       if (err) throw err

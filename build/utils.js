@@ -99,3 +99,16 @@ exports.getEntries = function (globPath) {
   });
   return entries;
 }
+
+/**
+ * 将组件名称，由小写加中划线，改为大写字母打头的驼峰命名。
+ * 如 text-viewer 之类的命名，转换为 TextViewer
+ * @param   {string}        name        原组件名，如 text-viewer
+ * @returns {string}                    转换结果，如 TextViewer
+ */
+exports.toCamel = (name) => {
+    if (!name || typeof name !== 'string') {
+        return name;
+    }
+    return name.toLowerCase().replace(/(-|^)[a-z]/g, x => x.toUpperCase().replace('-', ''));
+}

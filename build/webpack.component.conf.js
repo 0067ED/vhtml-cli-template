@@ -10,9 +10,9 @@ var vueLoaderConfig = require('./vue-loader.conf')
 var env = config.build.env
 
 
-module.exports = function(entry, outputJSFilename, outputStyleFilename) {
+module.exports = function(entry, output, outputStyleFilename) {
     // console.warn(utils.assetsPath('hello.js'));
-    console.log(`\n\toutput JavaScript:`, outputJSFilename);
+    console.log(`\n\toutput JavaScript:`, output.filename);
     console.log(`\toutput Style:`, outputStyleFilename);
   var webpackConfig = merge(baseWebpackConfig, {
     entry: entry,
@@ -25,8 +25,8 @@ module.exports = function(entry, outputJSFilename, outputStyleFilename) {
     devtool: config.build.productionSourceMap ? '#source-map' : false,
     output: {
       path: config.build.assetsRoot,
-      filename: outputJSFilename,
-      libraryTarget: 'umd'
+      libraryTarget: 'umd',
+      ...output
     //   filename: utils.assetsPath(outputFilename),
     //   chunkFilename: utils.assetsPath(`js/[name]-[chunkhash].js`),
       // library: 'webpackNumbers',
