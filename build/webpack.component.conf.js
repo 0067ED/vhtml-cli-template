@@ -26,6 +26,7 @@ module.exports = function(entry, output, outputStyleFilename) {
     output: {
       path: config.build.assetsRoot,
       libraryTarget: 'umd',
+      umdNamedDefine: true,
       ...output
     //   filename: utils.assetsPath(outputFilename),
     //   chunkFilename: utils.assetsPath(`js/[name]-[chunkhash].js`),
