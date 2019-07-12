@@ -22,7 +22,7 @@
 npm run dev
 ```
 
-然后浏览器打开 [http://localhost:8964/](http://localhost:8964/) ，即可看到 `src/components` 中的组件列表，通过点击示例页的链接，可以在页面中调试。
+然后浏览器打开 [http://localhost:9846/](http://localhost:9846/) ，即可看到 `src/components` 中的组件列表，通过点击示例页的链接，可以在页面中调试。
 
 ## 组件构建
 
