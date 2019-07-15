@@ -34,8 +34,9 @@ program
     entry[packageJson.name] = packageJson.main;
 
     let output = {
-        filename: path.join('../static/[name]/index.js'),
-        library: utils.toCamel(packageJson.name)
+        filename: path.join(`../static/[name]_${packageJson.version}/index.js`),
+        // library: utils.toCamel(packageJson.name)
+        library: packageJson.name
     };
     console.log(chalk.cyan('Component information:\n\tname:'), chalk.green(componentName));
     console.log(chalk.cyan('\tpath:'), chalk.green(componentPath));
