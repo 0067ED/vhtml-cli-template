@@ -19,21 +19,11 @@ program
   .action((componentName, cmd) => {
     let componentPath = path.join(__dirname, '../src/components/', componentName);
     let packageJsonPath = path.join(componentPath, 'package.json');
-    if (!fs.existsSync(componentPath)) {
-        console.error(`${componentPath} not exists.`)
-        process.exit();
-    }
-    if (!fs.existsSync(packageJsonPath)) {
-        console.error(`${packageJsonPath} not exists.`)
-        process.exit();
-    }
-
     let packageJson = require(packageJsonPath);
-    if (!packageJson || !packageJson.main) {
-        packageJson.main = path.join(componentPath, 'index.vue');
-    }
-    if (!fs.existsSync(packageJson.main)) {
-        console.error(`${packageJson.main} not exists.`)
+
+    let err = utils.checkComponent(componentName);
+    if (err) {
+        console.error(err.message);
         process.exit();
     }
 

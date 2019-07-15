@@ -1,6 +1,7 @@
-var path = require('path')
-var config = require('../config')
-var ExtractTextPlugin = require('extract-text-webpack-plugin')
+var path = require('path');
+var fs = require('fs');
+var config = require('../config');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var glob = require('glob');
 const styleVariables = require('./common');
 
@@ -111,4 +112,40 @@ exports.toCamel = (name) => {
         return name;
     }
     return name.toLowerCase().replace(/(-|^)[a-z]/g, x => x.toUpperCase().replace('-', ''));
+}
+
+/**
+ * 检查一个自定义组件是否完备
+ * @params  {string}    componentName       组件名
+ * @returns     {error}                     如果没有错误，则为 null
+ */
+exports.checkComponent = (componentName) => {
+    let r = '';
+    let componentPath = path.join(__dirname, '../src/components/', componentName);
+    let packageJsonPath = path.join(componentPath, 'package.json');
+    if (!fs.existsSync(componentPath)) {
+        r = `路径 ${componentPath} 不存在`
+    }
+    if (!fs.existsSync(packageJsonPath)) {
+        r = '在自定义组件目录中，没有找到 package.json 文件'
+    }
+
+    let packageJson = require(packageJsonPath);
+    if (!packageJson || !packageJson.main) {
+        packageJson.main = path.join(componentPath, 'index.vue');
+    }
+    if (!fs.existsSync(packageJson.main)) {
+        r = `组件入口文件 ${packageJson.main} 不存在`;
+    }
+    if (!packageJson.version) {
+        r = 'package.json 中没有指定版本号 version';
+    }
+    if (!packageJson.name) {
+        r = 'package.json 中没有指定组件名 name';
+    }
+    if (!r) {
+        return null;
+    } else {
+        return new Error(r)
+    }
 }
