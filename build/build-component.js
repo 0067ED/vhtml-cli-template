@@ -14,10 +14,7 @@ var webpackConfig = require('./webpack.component.conf')
 const program = require('commander')
 
 program
-    // .command('list')
-    // .action(_ => {
-    //     console.log('list')
-    // })
+  // build a component
   .command('component <component-name>')
   .action((componentName, cmd) => {
     let componentPath = path.join(__dirname, '../src/components/', componentName);
@@ -30,8 +27,7 @@ program
         console.error(`${packageJsonPath} not exists.`)
         process.exit();
     }
-    console.log(chalk.cyan('Component information:\n\tname:'), chalk.green(componentName));
-    console.log(chalk.cyan('\tpath:'), chalk.green(componentPath), '\n');
+
     let packageJson = require(packageJsonPath);
     if (!packageJson || !packageJson.main) {
         packageJson.main = path.join(componentPath, 'index.vue');
@@ -41,18 +37,21 @@ program
         process.exit();
     }
 
-    // let jbInfo = process.env.JB_DIST_INFO && JSON.parse(process.env.JB_DIST_INFO) || '';
     var spinner = ora('building for production...')
     spinner.start()
-    let outputJSFile = path.join('../static/[name]/index.js')
-    let outputStyleFile = path.join('../static/[name]/index.css')
+
     let entry = {};
     entry[packageJson.name] = packageJson.main;
+
     let output = {
-        filename: outputJSFile,
+        filename: path.join('../static/[name]/index.js'),
         library: utils.toCamel(packageJson.name)
     };
-    let cfg = webpackConfig(entry, output, outputStyleFile);
+    console.log(chalk.cyan('Component information:\n\tname:'), chalk.green(componentName));
+    console.log(chalk.cyan('\tpath:'), chalk.green(componentPath));
+    console.log(chalk.cyan('\tlibrary name:'), chalk.green(output.library), '\n');
+
+    let cfg = webpackConfig(entry, output);
     webpack(cfg, function (err, stats) {
       spinner.stop()
       if (err) throw err

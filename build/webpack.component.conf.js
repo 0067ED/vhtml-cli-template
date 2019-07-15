@@ -1,23 +1,20 @@
-var path = require('path')
-var utils = require('./utils')
 var webpack = require('webpack')
 var config = require('../config')
 var merge = require('webpack-merge')
 var baseWebpackConfig = require('./webpack.base.conf')
-var vueLoaderConfig = require('./vue-loader.conf')
 // var ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 var env = config.build.env
 
-
-module.exports = function(entry, output, outputStyleFilename) {
-    // console.warn(utils.assetsPath('hello.js'));
-    console.log(`\n\toutput JavaScript:`, output.filename);
-    console.log(`\toutput Style:`, outputStyleFilename);
+/**
+ * create webpack configure object
+ * @param   {object}        entry       webpack entry object
+ * @param   {object}        output      webpack output object
+ */
+module.exports = function(entry, output) {
   var webpackConfig = merge(baseWebpackConfig, {
-    entry: entry,
-    module: {
-    },
+    entry,
+    module: {},
     externals: {
       vue: 'Vue',
       'vhtml-ui': 'vhtml'
@@ -28,10 +25,6 @@ module.exports = function(entry, output, outputStyleFilename) {
       libraryTarget: 'umd',
       umdNamedDefine: true,
       ...output
-    //   filename: utils.assetsPath(outputFilename),
-    //   chunkFilename: utils.assetsPath(`js/[name]-[chunkhash].js`),
-      // library: 'webpackNumbers',
-      // libraryTarget: 'this'
     },
 
     plugins: [
@@ -39,20 +32,7 @@ module.exports = function(entry, output, outputStyleFilename) {
       new webpack.DefinePlugin({
         'process.env': env
       }),
-      // new webpack.optimize.UglifyJsPlugin({
-      //   compress: {
-      //     warnings: false
-      //   },
-      //   sourceMap: true
-      // }),
       new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /zh-cn/)
-    //   new ExtractTextPlugin({
-    //     filename: (getPath) => {
-    //     //   return utils.assetsPath('css/' + getPath(`veaComponents.css`).replace(/\//g, '_'));
-    //         return outputStyleFilename;
-    //     },
-    //     allChunks: true
-    //   })
     ]
   })
   return webpackConfig;
