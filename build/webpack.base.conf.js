@@ -7,11 +7,9 @@ function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
-// console.log('entry', utils.getEntries('./src/pages/**/main.js'))
-//   console.log('path', config.build.assetsRoot)
-    // console.log('publicPath', config.dev.assetsPublicPath)
 module.exports = {
-  entry: utils.getEntries('./src/pages/examples/main.js'),
+  // entry: utils.getEntries('./src/pages/examples/main.js'),
+  entry: {},
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
