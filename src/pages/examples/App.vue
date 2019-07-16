@@ -36,6 +36,9 @@ export default {
 </script>
 
 <style lang='less'>
+    body {
+        margin: 0;
+    }
     .component-examples {
         .back-guide {
             z-index: 10;

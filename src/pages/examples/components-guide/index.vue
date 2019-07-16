@@ -29,7 +29,7 @@ export default {
                         }
                         return h('router-link', {
                             props: {
-                                to: `/examples/${row.name}/example`
+                                to: `/examples/${row.name}`
                             }
                         }, row.name);
                     }
