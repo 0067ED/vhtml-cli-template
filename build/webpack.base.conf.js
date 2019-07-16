@@ -8,7 +8,6 @@ function resolve (dir) {
 }
 
 module.exports = {
-  // entry: utils.getEntries('./src/pages/examples/main.js'),
   entry: {},
   output: {
     path: config.build.assetsRoot,

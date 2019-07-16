@@ -12,7 +12,7 @@ var env = config.build.env
  * @param   {object}        output      webpack output object
  */
 module.exports = function(entry, output) {
-  var webpackConfig = merge(baseWebpackConfig, {
+  var webpackConfig = merge({}, baseWebpackConfig, {
     entry,
     module: {},
     externals: {
@@ -34,7 +34,7 @@ module.exports = function(entry, output) {
       }),
       new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /zh-cn/)
     ]
-  })
+  });
   return webpackConfig;
 }
 

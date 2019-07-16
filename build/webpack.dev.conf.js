@@ -5,27 +5,25 @@ var merge = require('webpack-merge')
 var baseWebpackConfig = require('./webpack.base.conf')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
-var copyPlugin = require('copy-webpack-plugin')
 var CopyWebpackPlugin = require('copy-webpack-plugin')
 var HtmlHardDisk = require('html-webpack-harddisk-plugin')
-var fs = require('fs-extra')
 var path = require('path')
 // var MyPlugin = require('./htmlPlugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var CSSSplitWebpackPlugin = require('css-split-webpack-plugin').default
-// add hot-reload related code to entry chunks
 
-function resolve (dir) {
-  return path.join(__dirname, '../../', dir)
-}
+// add entry
+let webpacCfg = merge({}, baseWebpackConfig, {
+    entry: utils.getEntries('./src/pages/examples/main.js')
+});
 
-Object.keys(baseWebpackConfig.entry).forEach(function (name) {
-  baseWebpackConfig.entry[name] = ['./build/dev-client'].concat(
-    baseWebpackConfig.entry[name]
+Object.keys(webpacCfg.entry).forEach(function (name) {
+    webpacCfg.entry[name] = ['./build/dev-client'].concat(
+        webpacCfg.entry[name]
   )
 })
 
-module.exports = merge(baseWebpackConfig, {
+module.exports = merge(webpacCfg, {
   module: {
     rules: utils
       .styleLoaders({ sourceMap: config.dev.cssSourceMap, extract: true })
