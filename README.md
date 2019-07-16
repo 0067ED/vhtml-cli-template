@@ -8,11 +8,12 @@
 * `package.json` 包描述文件
 * `example/index.vue` 示例页面
 
-`package.json` 中至少要包含如下字段：
+`package.json` 中包含如下字段：
 
-* `name`
-* `version`
-* `main` 指定入口文件，如果不指定，则默认为 index.vue
+* `name` 可选，指定包名，如 `text-viewer`，请与目录包保持一致，目前没有
+* `version` 必须，版本号将出现在打包构建结果的目录中
+* `description` 可选，会显示在调试页面中自定义组件列表的说明栏
+* `main` 可选，指定入口文件，如果不指定，则默认为 index.vue
 
 ## 开发调试
 
@@ -32,22 +33,22 @@ npm run dev
 npm run component text-viewer
 ```
 
-之后，文件会被放入 `public/static/text-viewer/` 目录中。使用 UMD 模式打包。
+之后，文件会被放入 `public/static/text-viewer_0.0.6/` 目录中。使用 UMD 模式打包。
 
 ## 构建结果
 
-构建结果存放在 `public/static/<component-name>/` 目录中，为单 `index.js` 文件，头部如下：
+构建结果存放在 `public/static/<component-name>_<component-version>/` 目录中，为单 `index.js` 文件，如 `public/static/text-viewer_0.0.6/index.js` 。该文件头部如下：
 
 ```js
 (function webpackUniversalModuleDefinition(root, factory) {
-        if(typeof exports === 'object' && typeof module === 'object')
-            module.exports = factory();
-        else if(typeof define === 'function' && define.amd)
-            define("TextViewer", [], factory);
-        else if(typeof exports === 'object')
-            exports["TextViewer"] = factory();
-        else
-            root["TextViewer"] = factory();
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define("text-viewer", [], factory);
+	else if(typeof exports === 'object')
+		exports["text-viewer"] = factory();
+	else
+		root["text-viewer"] = factory();
 })(this, function() {
 ```
 
