@@ -3,7 +3,6 @@
     <div class="nav-bar">
         <router-link to="/"><< 列表</router-link>
         <div class="right-holder">
-            <!-- <v-button @click="startBuild">在线构建</v-button> -->
             <v-select
                 v-model="currentComponent"
                 :options="options"
@@ -52,31 +51,6 @@ export default {
         openExample() {
             this.$router.push({
                 path: '/examples/' + this.currentComponent
-            });
-        },
-        startBuild() {
-            let client = axios.create({});
-            client.defaults.headers['content-type'] = 'application/json';
-            client.defaults.headers['x-dqapi-authentication'] = '31KIIPHNG3D76JBBIGSE529MH8SRQND0';
-            client.defaults.headers['x-dqapi-username'] = 'shidichen';
-
-            client({
-                url: 'http://api.dq.oa.com/qci/rest-api/pipeline/10585/start',
-                method: 'POST',
-                // data: {
-                    // trigger_base: 'branch',
-                    // cur_branch: 'master',
-                    // cur_env_params: {
-                    //     COMPONENT_NAME: this.currentComponent
-                    // }
-                // },
-                headers: {
-                    'content-type': 'application/json',
-                    'x-dqapi-authentication': '31KIIPHNG3D76JBBIGSE529MH8SRQND0',
-                    'x-dqapi-username': 'shidichen'
-                }
-            }).then(r => {
-                window.open('http://qci.oa.com/#/pipeline/10585/totalresult/current');
             });
         }
     }
