@@ -1,3 +1,4 @@
+const chalk = require('chalk');
 var config = require('../config')
 const GetComponents = require('../src/utils/GetComponents');
 
@@ -14,6 +15,7 @@ var proxyMiddleware = require('http-proxy-middleware');
 var webpackConfig = require('./webpack.dev.conf');
 var webpackComConfig = require('./webpack.dev.conf');
 var bodyParser = require('body-parser');
+const utils = require('./utils');
 
 var devPath = path.resolve(__dirname, '../dev');
 // default port where dev server listens for incoming traffic
@@ -182,10 +184,46 @@ app.use(hotMiddleware)
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.post('/build', (req, res) => {
+    let componentName = req.body.component;
+    if (!componentName) {
+        res.json({
+            code: 400,
+            msg: '必须指定组件名参数'
+        });
+        return;
+    }
+    let e = utils.checkComponent(componentName);
+    if (e) {
+        res.json({
+            code: 500,
+            msg: e.message
+        });
+        return;
+    }
+    let {packageJson} = utils.getComponent(componentName);
+    console.log('   Building component', chalk.green(`${componentName}`), '\n')
+    utils.doBuild(componentName).then(r => {
+        let output = r.stdout || r.stderr;
+        let isSuccess = true;
+        if (r.stdout.search('Build Error') >= 0) {
+            isSuccess = false;
+        }
+        console.log(r.stdout)
+        res.json({
+            code: 0,
+            data: {
+                path: `/static/${componentName}_${packageJson.version}/index.js`,
+                output,
+                isSuccess
+            }
+        });
+    });
+});
+
 // serve pure static assets
 var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
-console.log('static path', staticPath);
-app.use(staticPath, express.static('./static'))
+app.use(express.static('./public'))
 
 let mock = require('./mock');
 app.use(mock);

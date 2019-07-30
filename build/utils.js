@@ -1,5 +1,7 @@
 var path = require('path');
 var fs = require('fs');
+const {exec} = require('child_process');
+
 var config = require('../config');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var glob = require('glob');
@@ -115,9 +117,43 @@ exports.toCamel = (name) => {
 }
 
 /**
+ * 检查一个 vue 文件中的 <style> 部分，是否是 scoped 的
+ * @param {string} content 文件内容
+ */
+exports.isStyleScoped = content => {
+    let e = null;
+    if (!content || !content.length) {
+        return e;
+    }
+    let lines = content.split('\n');
+    // 寻找 <style 这一行
+    for (let i in lines) {
+        let line = lines[i];
+        if (!line) continue;
+        line = line.trim();
+        if (!line) continue;
+        if (line.search('<style') === 0) {
+            if (line.search('scoped') === -1) {
+                e = new Error('样式部分请使用 scoped 限定作用域');
+            }
+        }
+    }
+    return e;
+}
+
+exports.checkVueFile = filepath => {
+    let content = fs.readFileSync(filepath, 'utf8');
+    let e = exports.isStyleScoped(content);
+    if (e) {
+        e.filepath = filepath;
+    }
+    return e;
+}
+
+/**
  * 检查一个自定义组件是否完备
  * @params  {string}    componentName       组件名
- * @returns     {error}                     如果没有错误，则为 null
+ * @returns     {error}                     如果没有错误，则为 null，如果有错误，会在错误变量上绑定 filepath 确定出错文件
  */
 exports.checkComponent = (componentName) => {
     let r = '';
@@ -131,21 +167,61 @@ exports.checkComponent = (componentName) => {
     }
 
     let packageJson = require(packageJsonPath);
+    if (!fs.existsSync(packageJson.main)) {
+        r = new Error(`组件入口文件不存在`);
+        r.filepath = packageJson.main;
+    }
     if (!packageJson || !packageJson.main) {
         packageJson.main = path.join(componentPath, 'index.vue');
-    }
-    if (!fs.existsSync(packageJson.main)) {
-        r = `组件入口文件 ${packageJson.main} 不存在`;
+
+        r = exports.checkVueFile(packageJson.main);
     }
     if (!packageJson.version) {
-        r = 'package.json 中没有指定版本号 version';
+        r = new Error('没有指定版本号 version');
+        r.filepath = packageJsonPath;
     }
     if (!packageJson.name) {
-        r = 'package.json 中没有指定组件名 name';
+        r = new Error('没有指定组件名 name');
+        r.filepath = packageJsonPath;
     }
     if (!r) {
         return null;
     } else {
-        return new Error(r)
+        if (typeof r === 'string') {
+            return new Error(r)
+        } else {
+            return r;
+        }
+    }
+};
+
+/**
+ * 构建某个自定义模块
+ * @param {string} componentName 自定义组件名
+ */
+exports.doBuild = async componentName => {
+    return new Promise(resolve => {
+        exec(`node build/build-component.js component ${componentName}`, (err, stdout, stderr) => {
+            return resolve({
+                stdout,
+                stderr
+            })
+        })
+    });
+};
+
+/**
+ * 返回指定自定义组件的基本信息
+ * @param {string} componentName 组件名
+ * @return {object} {componentPath: '', packageJsonPath: '', packageJson: {}}
+ */
+exports.getComponent = componentName => {
+    let componentPath = path.join(__dirname, '../src/components/', componentName);
+    let packageJsonPath = path.join(componentPath, 'package.json');
+    let packageJson = require(packageJsonPath);
+    return {
+        componentPath,
+        packageJsonPath,
+        packageJson
     }
 }
